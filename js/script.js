@@ -247,66 +247,79 @@ if (!document.body.classList.contains('payment-theme')) {
 
 // Se for a página de checkout...
 if (document.body.classList.contains('checkout-theme')) {
-  const cart = cartItems || [];
+  (async () => {
+    // Busca o carrinho atualizado da API
+    const carrinhoResp = await fetch(`/api/carrinho/${ID_USUARIO}`);
+    const cart = (await carrinhoResp.json()).map(item => ({
+      id: item.id,
+      title: item.titulo,
+      price: item.preco,
+      qty: item.quantidade
+    }));
 
-  const checkoutBooks = document.getElementById('checkout-books');
-  const totalEl = document.getElementById('checkout-total');
+    const checkoutBooks = document.getElementById('checkout-books');
+    const totalEl = document.getElementById('checkout-total');
+    checkoutBooks.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+      const div = document.createElement('div');
+      div.textContent = `${item.title} - R$ ${item.price.toFixed(2)} x ${item.qty}`;
+      checkoutBooks.appendChild(div);
+      total += item.price * item.qty;
+    });
+    totalEl.textContent = `Total: R$ ${total.toFixed(2)}`;
 
-  let total = 0;
-  cart.forEach(item => {
-    const div = document.createElement('div');
-    div.textContent = `${item.title} - R$ ${item.price.toFixed(2)} x ${item.qty}`;
-    checkoutBooks.appendChild(div);
-    total += item.price * item.qty;
-  });
 
-  totalEl.textContent = `Total: R$ ${total.toFixed(2)}`;
-
-
-   //  Redireciona para a página de pagamento
-   const btn = document.getElementById('proceed-to-payment');
-   if (btn) {
-     btn.addEventListener('click', () => {
-       window.location.href = 'pagamento.html';
-     });
-   }
-
+     //  Redireciona para a página de pagamento
+     const btn = document.getElementById('proceed-to-payment');
+     if (btn) {
+       btn.addEventListener('click', () => {
+         window.location.href = 'pagamento.html';
+       });
+     }
+  })();
 }
 
 // Se for a página de pagamento...
 if (document.body.classList.contains('payment-theme')) {
-  const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+  (async () => {
+    // Busca o carrinho atualizado da API
+    const carrinhoResp = await fetch(`/api/carrinho/${ID_USUARIO}`);
+    const cart = (await carrinhoResp.json()).map(item => ({
+      id: item.id,
+      title: item.titulo,
+      price: item.preco,
+      qty: item.quantidade
+    }));
 
-  const totalEl = document.getElementById('payment-total');
-
-  let total = 0;
-  cart.forEach(item => {
-    total += item.price * item.qty;
-  });
-
-  totalEl.textContent = `Total: R$ ${total.toFixed(2)}`;
-
-  const btn = document.getElementById('pix');
-  if (btn) {
-    btn.addEventListener('click', async () => {
-      confettiAnimation(); // Animação de confete
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Aguarda 2 segundos antes de mostrar o alerta
-      await Swal.fire({
-        title: 'Compra Finalizada!',
-        text: 'Muito obrigada por comprar com a gente 💖',
-        icon: 'success',
-        confirmButtonText: 'Voltar pra livraria',
-        confirmButtonColor: 'mediumseagreen', // Nome de cor CSS
-        background: 'lavenderblush',          // Cor de fundo
-        color: 'midnightblue'                 // Cor do texto
-      });
-      cartItems = []; // Limpa o array
-      localStorage.removeItem('cartItems'); // Limpa o localStorage
-      window.location.href = 'index.html'; // Redireciona para a página inicial
+    const totalEl = document.getElementById('payment-total');
+    let total = 0;
+    cart.forEach(item => {
+      total += item.price * item.qty;
     });
-  }
-}
+    totalEl.textContent = `Total: R$ ${total.toFixed(2)}`;
 
+    const btn = document.getElementById('pix');
+    if (btn) {
+      btn.addEventListener('click', async () => {
+        confettiAnimation();
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await Swal.fire({
+          title: 'Compra Finalizada!',
+          text: 'Muito obrigada por comprar com a gente 💖',
+          icon: 'success',
+          confirmButtonText: 'Voltar pra livraria',
+          confirmButtonColor: 'mediumseagreen',
+          background: 'lavenderblush',
+          color: 'midnightblue'
+        });
+        // Limpa o carrinho no banco de dados
+        await fetch(`/api/carrinho/${ID_USUARIO}`, { method: 'DELETE' });
+        window.location.href = 'index.html';
+      });
+    }
+  })();
+}
 
 // Animação de confete (usando biblioteca externa)
 function confettiAnimation() {
@@ -325,8 +338,15 @@ function confettiAnimation() {
 }
 
 
-function pagarPIX() {
-  const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+async function pagarPIX() {
+  // Busca o carrinho atualizado da API
+  const carrinhoResp = await fetch(`/api/carrinho/${ID_USUARIO}`);
+  const cart = (await carrinhoResp.json()).map(item => ({
+    id: item.id,
+    title: item.titulo,
+    price: item.preco,
+    qty: item.quantidade
+  }));
   let total = 0;
   cart.forEach(item => {
     total += item.price * item.qty;
@@ -402,6 +422,7 @@ function pagarPIX() {
   `;
   qrCodeDiv.appendChild(info);
 }
+
 
 // Só carrega os dados completos se não estiver na tela de pagamento
 window.addEventListener('pageshow', (event) => {
