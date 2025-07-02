@@ -316,7 +316,7 @@ body.romance-theme {
   }
   
   /* Botão "Cart" no Header */
-  #cart-button {
+  #cart-button, #login-button{
     background-color: transparent;
     border: none;
     font-size: 24px;

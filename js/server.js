@@ -1,0 +1,148 @@
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+const app = express();
+const PORT = 3000;
+
+const db = new sqlite3.Database('./livraria.db');
+
+app.use(express.json());
+
+// Rota para listar todos os livros
+app.get('/api/livros', (req, res) => {
+  const query = 'SELECT * FROM livros';
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      console.error('Erro ao buscar livros:', err);
+      res.status(500).json({ erro: 'Erro ao buscar livros' });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
+// Rota para listar todos os gêneros
+app.get('/api/generos', (req, res) => {
+  const query = 'SELECT * FROM generos';
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      console.error('Erro ao buscar gêneros:', err);
+      res.status(500).json({ erro: 'Erro ao buscar gêneros' });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
+// Rota para listar todas as relações livro-genero
+app.get('/api/livroGenero', (req, res) => {
+  const query = 'SELECT * FROM livroGenero';
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      console.error('Erro ao buscar relações livro-gênero:', err);
+      res.status(500).json({ erro: 'Erro ao buscar livroGenero' });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+// 🔹 Rota para obter carrinho de um usuário
+app.get('/api/carrinho/:id_usuario', (req, res) => {
+  const id = req.params.id_usuario;
+  const sql = `
+    SELECT livros.id, livros.titulo, livros.preco, carrinho.quantidade
+    FROM carrinho
+    JOIN livros ON carrinho.id_livro = livros.id
+    WHERE carrinho.id_usuario = ?
+  `;
+  db.all(sql, [id], (err, rows) => {
+    if (err) return res.status(500).json({ erro: err.message });
+    res.json(rows);
+  });
+});
+
+// 🔹 Adiciona item ao carrinho
+app.post('/api/carrinho', (req, res) => {
+  const { id_usuario, id_livro, quantidade } = req.body;
+
+  db.get(`SELECT * FROM carrinho WHERE id_usuario = ? AND id_livro = ?`, [id_usuario, id_livro], (err, row) => {
+    if (row) {
+      db.run(`UPDATE carrinho SET quantidade = quantidade + ? WHERE id_usuario = ? AND id_livro = ?`,
+        [quantidade, id_usuario, id_livro], function (err2) {
+          if (err2) return res.status(500).json({ erro: err2.message });
+          res.json({ sucesso: true });
+        });
+    } else {
+      db.run(`INSERT INTO carrinho (id_usuario, id_livro, quantidade) VALUES (?, ?, ?)`,
+        [id_usuario, id_livro, quantidade], function (err2) {
+          if (err2) return res.status(500).json({ erro: err2.message });
+          res.json({ sucesso: true });
+        });
+    }
+  });
+});
+
+app.delete('/api/carrinho', (req, res) => {
+  console.log('Rota DELETE recebida com sucesso!');
+  const { id_usuario, titulo, removerApenasUm } = req.body;
+
+  if (!id_usuario || !titulo) {
+    return res.status(400).json({ erro: 'id_usuario ou título não fornecido' });
+  }
+
+  db.get('SELECT id FROM livros WHERE titulo = ?', [titulo], (err, livro) => {
+    if (err) return res.status(500).json({ erro: 'Erro ao buscar livro' });
+    if (!livro) return res.status(404).json({ erro: 'Livro não encontrado' });
+
+    const idLivro = livro.id;
+
+    db.get(
+      'SELECT quantidade FROM carrinho WHERE id_usuario = ? AND id_livro = ?',
+      [id_usuario, idLivro],
+      (err, row) => {
+        if (err) return res.status(500).json({ erro: 'Erro ao acessar o carrinho' });
+
+        if (!row) {
+          return res.status(404).json({ erro: 'Livro não está no carrinho' });
+        }
+
+        if (removerApenasUm && row.quantidade > 1) {
+          db.run(
+            'UPDATE carrinho SET quantidade = quantidade - 1 WHERE id_usuario = ? AND id_livro = ?',
+            [id_usuario, idLivro],
+            function (err) {
+              if (err) return res.status(500).json({ erro: 'Erro ao atualizar o carrinho' });
+              return res.status(200).json({ mensagem: 'Quantidade reduzida' });
+            }
+          );
+        } else {
+          db.run(
+            'DELETE FROM carrinho WHERE id_usuario = ? AND id_livro = ?',
+            [id_usuario, idLivro],
+            function (err) {
+              if (err) return res.status(500).json({ erro: 'Erro ao remover item do carrinho' });
+              return res.status(200).json({ mensagem: 'Item removido do carrinho' });
+            }
+          );
+        }
+      }
+    );
+  });
+});
+
+
+// 🔹 Limpa carrinho
+app.delete('/api/carrinho/:id_usuario', (req, res) => {
+  const id = req.params.id_usuario;
+  db.run(`DELETE FROM carrinho WHERE id_usuario = ?`, [id], (err) => {
+    if (err) return res.status(500).json({ erro: err.message });
+    res.json({ sucesso: true });
+  });
+});
+
+
+app.use(express.static(path.join(__dirname, '..')));
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+});

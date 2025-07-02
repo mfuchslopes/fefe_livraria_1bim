@@ -1,0 +1,11 @@
+﻿id;nome;descricao;imagem,slug
+1;Suspense;Chegue mais perto do mistério! 👻;../../img/suspense.jpg;suspense
+2;Romance;Histórias pra aquecer o coração! 💖;../../img/romance.jpg;romance
+3;Fantasia;Voe com dragões e magos! 🧙‍♂️🐉;../../img/fantasia.jpg;fantasia
+4;Drama;Para quem ama fortes emoções! 🎭;../../img/drama.jpg;drama
+5;Sci-fi;Vem explorar outros mundos! 🚀;../../img/scifi.jpg;scifi
+6;Biografias;Histórias reais que inspiram! ✨;../../img/biografias.jpg;biografias
+7;Autoajuda;Para melhorar cada dia! 🌞;../../img/autoajuda.jpg;autoajuda
+8;Clássicos;As lendas da literatura! 📚;../../img/classicos.jpg;classicos
+9;Técnicos;Aprendizado hardcore! 🧠;../../img/tecnicos.jpg;tecnicos
+10;Literatura Brasileira;Nossa arte em palavras! 🇧🇷;../../img/literatura-brasileira.jpg;literatura-brasileira

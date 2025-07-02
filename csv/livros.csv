@@ -1,0 +1,59 @@
+﻿id;titulo;preco;descricao;imagem
+1;O Gambito da Rainha;59.90;A história de uma jovem prodígio do xadrez em uma luta interna.;../../../img/oGambitoDaRainha.jpg
+2;Jane Eyre;39.90;A clássica história de uma mulher que desafia as convenções da sociedade.;../../../img/janeEyre.jpg
+3;O Grande Jogo ;44.90;Uma trama cheia de reviravoltas entre amor e desconfiança.;../../../img/oGrandeJogo.jpg
+4;O Passageiro para Frankfurt;49.90;Uma história de mistério e suspense com toques de crítica social.;../../../img/opassageiroParaFrankfurt.jpg
+5;Melhor do que nos Filmes;42.90;Uma comédia romântica cheia de surpresas e reviravoltas.;../../../img/melhorDoQueNosFilmes.jpg
+6;Não é Como nos Filmes;45.00;Uma história realista de um romance que quebra as expectativas.;../../../img/naoEhComoNosFilmes.jpg
+7;Jack, o Estripador - Rastro de Sangue;59.90;Investigações sobre o maior mistério da história criminal de Londres.;../../../img/jackOEstripador.jpg
+8;Príncipe Drácula - Rastro de Sangue;55.00;A história sombria de um príncipe que se tornou lenda.;../../../img/principeDracula.jpg
+9;O Grande Houdini - Rastro de Sangue;62.00;Mistério e magia se encontram em uma investigação sobre Houdini.;../../../img/oGrandeHoudini.jpg
+10;Holmes, o Maligno - Rastro de Sangue;49.90;Uma nova versão das aventuras de Sherlock Holmes, mais sombria e intensa.;../../../img/holmesOMaligno.jpg
+11;A Noite das Bruxas;44.90;Mistérios e horrores de uma noite onde o terror se instala.;../../../img/aNoiteDasBruxas.jpg
+12;Caraval;49.90;Uma fantasia repleta de magia, mistério e desafios.;../../../img/caraval.jpg
+13;Lendário;52.00;A sequência de Caraval que traz mais magia e mais mistérios a serem resolvidos.;../../../img/lendario.jpg
+14;Finale;55.00;O fim de uma saga onde as apostas são altas e o destino está em jogo.;../../../img/finale.jpg
+15;Espetacular;59.90;A última parte da trilogia Caraval, onde a magia se mistura com o destino.;../../../img/espetacular.jpg
+16;Emma;39.90;Uma jovem que manipula o destino dos outros, mas se vê em uma encruzilhada com seus próprios sentimentos.;../../../img/emma.jpg
+17;Estilhaça-me;49.90;Em um mundo distópico, uma jovem com poderes perigosos luta por liberdade e amor.;../../../img/estilhacaMe.jpg
+18;Liberta-me;54.90;A continuação de uma história cheia de desafios e escolhas difíceis.;../../../img/libertaMe.jpg
+19;Unifica-me;59.90;O destino final de uma jovem que precisa unir forças para salvar o mundo.;../../../img/unificaMe.jpg
+20;Incendeia-me;44.90;Uma jovem com poderes devastadores deve decidir entre amor e vingança.;../../../img/incendeiaMe.jpg
+21;Restaura-me;49.90;Após os eventos traumáticos, a protagonista deve se reerguer e lutar pelo que é certo.;../../../img/restauraMe.jpg
+22;Desafia-me;47.90;O enfrentamento dos maiores medos e desafios de uma jovem em um mundo em guerra.;../../../img/desafiaMe.jpg
+23;Decifra-me;49.90;Em um jogo de enigmas e mistérios, a verdade é mais difícil de alcançar do que parece.;../../../img/decifraMe.jpg
+24;Imagina-me;42.90;A imaginação como uma forma de escapar das dificuldades da vida, mas com consequências.;../../../img/imaginaMe.jpg
+25;Aceita-me;50.00;O confronto entre orgulho e vulnerabilidade, amor e medo.;../../../img/aceitaMe.jpg
+26;Academia dos Casos Arquivados;39.90;Um mistério a ser desvendado entre casos esquecidos e a verdade oculta.;../../../img/academiaDosCasosArquivados.jpg
+27;Instinto Assassino;59.90;Em um thriller psicológico, os limites entre o certo e o errado começam a se desfazer.;../../../img/instintoAssassino.jpg
+28;Tudo ou Nada;55.00;Uma história de risco, onde a vida de muitas pessoas está em jogo.;../../../img/tudoOuNada.jpg
+29;Conflitos de Sangue;57.90;Em um mundo dividido por guerras e trações, apenas os mais fortes sobrevivem.;../../../img/conflitosDeSangue.jpg
+30;Uma Vida Pequena;69.90;A difícil jornada de uma amizade que atravessa anos e muitos obstáculos.;../../../img/umaVidaPequena.jpg
+31;Os Sertões;29.90;Histórias e personagens que marcam a literatura brasileira, trazendo vivências do sertão.;../../../img/osSertoes.jpg
+32;Marília de Dirceu;27.50;A poesia de uma época e a saga de uma mulher forte e independente.;../../../img/mariliaDeDirceu.jpg
+33;Memórias Póstumas de Brás Cubas;32.00;A visão irreverente de um morto sobre a sociedade e suas falhas.;../../../img/memoriasPostumasDeBrasCubas.jpg
+34;Dom Casmurro;35.90;O clássico romance de ciúmes e incertezas que permeia a vida de Bentinho e Capitu.;../../../img/domCasmurro.jpg
+35;Androides Sonham com Ovelhas Elétricas;65.00;Reflexões sobre a natureza humana e as máquinas em um mundo pós-apocalíptico.;../../../img/androidesSonham.jpg
+36;The Kiss of Deception - Crônicas de Amor e Ódio;49.90;A história de uma princesa em fuga e de dois príncipes com destinos entrelaçados.;../../../img/theKissOfDeception.jpg
+37;The Heart of Betrayal - Crônicas de Amor e Ódio;49.90;Em um mundo dividido, o amor e a lealdade são testados a todo momento.;../../../img/theHeartOfBetrayal.jpg
+38;The Beauty of Darkness - Crônicas de Amor e Ódio;52.00;A batalha final de uma guerra que pode destruir tudo o que é amado.;../../../img/theBeautyOfDarkness.jpg
+39;A Hora da Estrela;39.90;A vida simples e tocante de uma jovem nordestina que chega ao Rio de Janeiro.;../../../img/aHoraDaEstrela.jpg
+40;Mulherzinhas;42.90;A história de quatro irmãs que enfrentam os desafios da vida e da guerra.;../../../img/mulherzinhas.jpg
+41;Duna;39.90;A luta pelo controle do planeta Arrakis e as complexas relações políticas e sociais.;../../../img/duna.jpg
+42;1984;39.90;Uma distopia totalitária que explora os perigos de um governo opressor.;../../../img/1984.jpg
+43;A Volta ao Mundo em 80 dias;29.90;Uma emocionante jornada ao redor do mundo em um desafio de tempo e resistência.;../../../img/aVoltaAoMundoEm80Dias.jpg
+44;O Poder do Agora;49.90;A busca pela paz interior e o significado do momento presente.;../../../img/oPoderDoAgora.jpg
+45;O Homem Mais Rico da Babilônia;39.90;Lições sobre riqueza e prosperidade baseadas nos princípios da antiga Babilônia.;../../../img/oHomemMaisRicoDaBabilonia.jpg
+46;Como fazer Amigos e Influenciar Pessoas;44.90;Técnicas comprovadas para melhorar a comunicação e a interação social.;../../../img/comoFazerAmigos.png
+47;O Poder do Hábito;42.90;Como os hábitos influenciam a nossa vida e como podemos mudá-los;../../../img/oPoderDoHabito.png
+48;A Coragem de Não Agradar;48.90;A importância de ser autêntico e viver sem se preocupar com a aprovação dos outros.;../../../img/aCoragemDeNaoAgradar.png
+49;Comece Pelo Porquê;49.90;Entenda o 'porquê' por trás de suas ações para alcançar o sucesso.;../../../img/comecePeloPorque.png
+50;A Morte é um Dia que Vale a Pena Viver;39.90;Reflexões sobre a vida e a morte que nos convidam a viver plenamente.;../../../img/aMorteEDiaQueVale.jpg
+51;Código Limpo: Um Guia para Desenvolver Códigos Legíveis e Manuteníveis;99.90;Como escrever código de qualidade que seja fácil de manter e expandir.;../../../img/codigoLimpo.jpg
+52;Use a Cabeça! Programação;59.90;Introdução à programação de forma divertida e didática.;../../../img/useACabecaProgramacao.jpg
+53;A Arte da Programação;99.90;Conceitos e técnicas fundamentais para escrever código eficaz.;../../../img/arteDaProgramacao.png
+54;Refactoring: Melhorando  o Design de Código Existente;89.90;Como melhorar a estrutura do código sem alterar seu comportamento.;../../../img/refactoring.jpg
+55;Clean Architecture: A Handbook for Software Structure and Design;99.90;Princípios para escrever código limpo e bem estruturado.;../../../img/cleanArchitecture.jpg
+56;O Investidor Inteligente;79.90;Conceitos para investir com sabedoria e alcançar independência financeira.;../../../img/oInvestidorInteligente.png
+57;A Economia Irracional;69.90;Entenda como as emoções influenciam as decisões econômicas e financeiras.;../../../img/aEconomiaIrracional.jpg
+58;Steve Jobs;54.80;Entre na mente visionária por trás da Apple, explorando sua genialidade, falhas e impacto duradouro na tecnologia e no design.;../../../img/steveJobs.jpg
