@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Cadastro de Livros</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Cadastro de Livros</h1>
+    <a href="index.html">Voltar ao painel</a>
+  </header>
+  <main>
+    <form id="form-livro">
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo" required>
+      <label for="autor">Autor:</label>
+      <input type="text" id="autor" name="autor" required>
+      <label for="preco">Preço:</label>
+      <input type="number" id="preco" name="preco" step="0.01" required>
+      <label for="genero">Gênero:</label>
+      <input type="text" id="genero" name="genero" required>
+      <label for="descricao">Descrição:</label>
+      <textarea id="descricao" name="descricao" required></textarea>
+      <label for="imagem">URL da Imagem:</label>
+      <input type="text" id="imagem" name="imagem" required>
+      <button type="submit">Cadastrar Livro</button>
+    </form>
+    <div id="mensagem-livro"></div>
+  </main>
+  <script src="/js/crud-livros.js"></script>
+</body>
+</html>

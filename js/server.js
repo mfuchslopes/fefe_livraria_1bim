@@ -3,6 +3,12 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const app = express();
 const PORT = 3000;
+const fs = require('fs');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { parse } = require('csv-parse/sync');
+const { stringify } = require('csv-stringify/sync');
+const SECRET = 'segredo-super-seguro'; // Troque por env seguro
 
 const db = new sqlite3.Database('./livraria.db');
 
@@ -46,6 +52,47 @@ app.get('/api/livroGenero', (req, res) => {
     }
   });
 });
+
+function lerUsuarios() {
+  const csv = fs.readFileSync('/csv/usuarios.csv', 'utf8');
+  return parse(csv, { columns: true });
+}
+
+function salvarUsuarios(usuarios) {
+  const csv = stringify(usuarios, { header: true });
+  fs.writeFileSync('./csv/usuarios.csv', csv);
+}
+
+// Cadastro
+app.post('/api/cadastro', (req, res) => {
+  const { nome, email, cpf, cep, endereco, senha } = req.body;
+  let usuarios = lerUsuarios();
+  if (usuarios.find(u => u.email === email)) {
+    return res.status(400).json({ erro: 'E-mail já cadastrado' });
+  }
+  const senha_hash = bcrypt.hashSync(senha, 10);
+  const novo = {
+    id: (usuarios.length + 1).toString(),
+    nome, email, senha_hash, tipo: 'cliente', cpf, cep, endereco
+  };
+  usuarios.push(novo);
+  salvarUsuarios(usuarios);
+  res.json({ sucesso: true });
+});
+
+// Login
+app.post('/api/login', (req, res) => {
+  const { email, senha } = req.body;
+  const usuarios = lerUsuarios();
+  const user = usuarios.find(u => u.email === email);
+  if (!user || !bcrypt.compareSync(senha, user.senha_hash)) {
+    return res.status(401).json({ erro: 'Usuário ou senha inválidos' });
+  }
+  const token = jwt.sign({ id: user.id, tipo: user.tipo }, SECRET, { expiresIn: '1d' });
+  res.json({ token, tipo: user.tipo });
+});
+
+
 // 🔹 Rota para obter carrinho de um usuário
 app.get('/api/carrinho/:id_usuario', (req, res) => {
   const id = req.params.id_usuario;

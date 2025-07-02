@@ -26,20 +26,23 @@ header {
 .header-left h1 {
     font-family:'Times New Roman', Times, serif;
     font-size: 2.5rem;
-    color: #857b7b
+    color: #857b7b;
+    text-align: center;
 }
 
 .header-center p {
     font-family: 'Georgia', serif;
     font-size: 1.2rem;
+    text-align: center;
 }
 
-.header-right button {
+.header-right button, .header-between button {
     background: none;
     border: none;
     font-size: 2rem;
     cursor: pointer;
 }
+
 
 /* Carrinho */
 #cart-overlay {
@@ -316,11 +319,14 @@ body.romance-theme {
   }
   
   /* Botão "Cart" no Header */
-  #cart-button, #login-button{
+  #cart-button, #login-button, .header-between button{
     background-color: transparent;
     border: none;
     font-size: 24px;
     cursor: pointer;
+    margin: 0 20px;
+    margin-right: 5px;
+    padding: 5px;
   }
  
   #cart-items {

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Gerenciar Usuários</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Gerenciar Usuários</h1>
+    <a href="index.html">Voltar ao painel</a>
+  </header>
+  <main>
+    <section>
+      <h2>Usuários cadastrados</h2>
+      <table id="tabela-usuarios">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Usuários serão inseridos aqui via JS -->
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Cadastrar novo usuário</h2>
+      <form id="form-novo-usuario">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo">
+          <option value="cliente">Cliente</option>
+          <option value="admin">Administrador</option>
+        </select>
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+        <button type="submit">Cadastrar Usuário</button>
+      </form>
+      <div id="mensagem-usuario"></div>
+    </section>
+  </main>
+  <script src="/js/crud-users.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Senha - Livraria da Fefê</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="esqueci-main">
+    <h2>Recuperar Senha</h2>
+    <form id="esqueci-form">
+      <label for="email">E-mail cadastrado:</label>
+      <input type="email" id="email" name="email" required>
+      <button type="submit">Enviar código</button>
+    </form>
+    <div id="codigo-section" style="display:none;">
+      <label for="codigo">Código recebido no e-mail:</label>
+      <input type="text" id="codigo" name="codigo" required>
+      <label for="nova-senha">Nova senha:</label>
+      <input type="password" id="nova-senha" name="nova-senha" required>
+      <button id="resetar-btn">Redefinir senha</button>
+    </div>
+    <div class="login-links">
+      <a href="login.html">Voltar ao login</a>
+    </div>
+  </main>
+  <script src="/js/esqueci-senha.js"></script>
+</body>
+</html>

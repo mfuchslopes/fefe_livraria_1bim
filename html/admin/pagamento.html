@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pagamento - Livraria da Fefê</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .hidden { display: none; }
+    #pix-qr canvas { margin-top: 10px; }
+  </style>
+</head>
+<body class="payment-theme">
+  <header>
+    <div class="header-left">
+      <h1>Livraria da Fefê</h1>
+    </div>
+    <div class="header-center">
+      <p>"É para isso que servem os livros. Para viajar sem sair do lugar."</p>
+    </div>
+    <div class="header-right">
+    </div>
+  </header>
+
+  <main>
+    <section class="payment-section">
+      <h2 id="escolha">Escolha a forma de pagamento</h2>
+      <p id="payment-total">Total: R$ 0,00</p>
+      <div class="payment-options">
+        <button id="pix-button" onclick="pagarPIX()">Pagar com PIX</button>
+        <button id="card-button">Pagar com Cartão</button>
+      </div>
+
+      <div id="pix-section" class="hidden">
+        <h3>Escaneie o QR Code para pagar com Pix</h3>
+        <div id="qrcode"></div>
+        <button id="pix">Finalizar Pagamento</button>
+      </div>
+
+      <div id="card-section" class="hidden">
+        <h3 id="pay">Pagamento com Cartão</h3>
+        <form>
+          <label for="card-number">Número do Cartão:</label>
+          <input type="text" id="card-number" name="card-number" required><br>
+
+          <label for="card-expiry">Validade:</label>
+          <input type="text" id="card-expiry" name="card-expiry" required><br>
+
+          <label for="card-cvc">CVC:</label>
+          <input type="text" id="card-cvc" name="card-cvc" required><br>
+
+          <button id="cartao">Finalizar Pagamento</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/script.js"></script>
+  <script>
+    // Espera o DOM carregar
+    document.addEventListener("DOMContentLoaded", function () {
+      const pixBtn = document.getElementById("pix-button");
+      const cardBtn = document.getElementById("card-button");
+
+      const pixSection = document.getElementById("pix-section");
+      const cardSection = document.getElementById("card-section");
+
+      pixBtn.addEventListener("click", () => {
+        pixSection.classList.remove("hidden");
+        cardSection.classList.add("hidden");
+      });
+
+      cardBtn.addEventListener("click", () => {
+        cardSection.classList.remove("hidden");
+        pixSection.classList.add("hidden");
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const numeroInput = document.getElementById("card-number");
+  const validadeInput = document.getElementById("card-expiry");
+  const cvcInput = document.getElementById("card-cvc");
+  const botaoCartao = document.getElementById("cartao");
+
+  // Máscara para número do cartão
+  numeroInput.addEventListener("input", () => {
+    let valor = numeroInput.value.replace(/\D/g, "").substring(0, 16);
+    valor = valor.replace(/(\d{4})(?=\d)/g, "$1 ");
+    numeroInput.value = valor;
+  });
+
+  // Máscara para validade
+  validadeInput.addEventListener("input", () => {
+    let valor = validadeInput.value.replace(/\D/g, "").substring(0, 4);
+    if (valor.length >= 3) {
+      valor = valor.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+    } else if (valor.length >= 1) {
+      valor = valor.replace(/(\d{1,2})/, "$1");
+    }
+    validadeInput.value = valor;
+  });
+
+  // Máscara para CVC
+  cvcInput.addEventListener("input", () => {
+    cvcInput.value = cvcInput.value.replace(/\D/g, "").substring(0, 4);
+  });
+
+  // Validação do formulário
+  botaoCartao.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const numero = numeroInput.value.trim();
+    const validade = validadeInput.value.trim();
+    const cvc = cvcInput.value.trim();
+
+    const bandeira = detectarBandeira(numero);
+    console.log("Bandeira detectada:", bandeira || "desconhecida");
+
+    if (!validarNumeroCartao(numero)) {
+      Swal.fire("Erro", "Número do cartão inválido!", "error");
+      return;
+    }
+
+    if (!validarValidade(validade)) {
+      Swal.fire("Erro", "Data de validade inválida ou expirada!", "error");
+      return;
+    }
+
+    // Validação do CVC com base na bandeira
+    if (bandeira === "amex") {
+      if (!/^\d{4}$/.test(cvc)) {
+        Swal.fire("Erro", "American Express exige CVC de 4 dígitos!", "error");
+        return;
+      }
+    } else {
+      if (!/^\d{3}$/.test(cvc)) {
+        Swal.fire("Erro", "CVC deve ter 3 dígitos!", "error");
+        return;
+      }
+    }
+      confettiAnimation(); // Animação de confete
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Aguarda 2 segundos antes de mostrar o alerta
+      await Swal.fire({
+        title: 'Compra Finalizada!',
+        text: 'Muito obrigada por comprar com a gente 💖',
+        icon: 'success',
+        confirmButtonText: 'Voltar pra livraria',
+        confirmButtonColor: 'mediumseagreen', // Nome de cor CSS
+        background: 'lavenderblush',          // Cor de fundo
+        color: 'midnightblue'                 // Cor do texto
+      });
+      cartItems = []; // Limpa o array
+      localStorage.removeItem('cartItems'); // Limpa o localStorage
+      window.location.href = 'index.html'; // Redireciona para a página inicial
+    });
+  });
+
+// Algoritmo de Luhn
+function validarNumeroCartao(numero) {
+  const apenasDigitos = numero.replace(/\D/g, "");
+  if (apenasDigitos.length < 13 || apenasDigitos.length > 19) return false;
+
+  let soma = 0;
+  let deveDobrar = false;
+  for (let i = apenasDigitos.length - 1; i >= 0; i--) {
+    let digito = parseInt(apenasDigitos.charAt(i));
+    if (deveDobrar) {
+      digito *= 2;
+      if (digito > 9) digito -= 9;
+    }
+    soma += digito;
+    deveDobrar = !deveDobrar;
+  }
+  return soma % 10 === 0;
+}
+
+// Validade
+function validarValidade(data) {
+  const match = data.match(/^(\d{2})\/(\d{2})$/);
+  if (!match) return false;
+
+  const mes = parseInt(match[1], 10);
+  const ano = parseInt("20" + match[2], 10);
+
+  if (mes < 1 || mes > 12) return false;
+
+  const agora = new Date();
+  const vencimento = new Date(ano, mes);
+  return vencimento > agora;
+}
+
+// Detecta a bandeira do cartão
+function detectarBandeira(numero) {
+  const n = numero.replace(/\D/g, "");
+
+  if (/^4\d{12}(\d{3})?$/.test(n)) return "visa";
+  if (/^5[1-5]\d{14}$/.test(n)) return "mastercard";
+  if (/^3[47]\d{13}$/.test(n)) return "amex";
+  if (/^6(?:011|5\d{2})\d{12}$/.test(n)) return "discover";
+  if (/^35\d{14}$/.test(n)) return "jcb";
+  if (/^(636368|504175|438935|451416|636297)\d+$/.test(n)) return "elo";
+
+  return null; // não reconhecida
+}
+
+   
+  </script>
+</body>
+</html>
+ 
