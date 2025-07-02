@@ -196,8 +196,15 @@ if (!document.body.classList.contains('payment-theme')) {
         color: 'midnightblue'
       });
       return;
-    }
-    window.location.href = '../checkout.html';
+    } 
+
+    // Caminho dinâmico para checkout.html
+      let path = window.location.pathname;
+      if (path.includes('/genres/')) {
+        window.location.href = '../checkout.html';
+      } else {
+        window.location.href = 'checkout.html';
+      }
   });
 }
 
