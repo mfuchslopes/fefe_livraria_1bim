@@ -167,15 +167,14 @@ async function removerDoCarrinho(titulo) {
       return;
     }
 
-    // 🔄 Atualiza os dados do carrinho após a alteração
-    const carrinhoResp = await fetch(`/api/carrinho/${ID_USUARIO}`);
-    cartItems = (await carrinhoResp.json()).map(item => ({
+    // Usa o carrinho atualizado retornado pelo servidor
+    const novosItens = await resposta.json();
+    cartItems = novosItens.map(item => ({
       id: item.id,
       title: item.titulo,
       price: item.preco,
       qty: item.quantidade
     }));
-
     updateCartUI();
 
   } catch (error) {
@@ -405,8 +404,8 @@ function pagarPIX() {
 }
 
 // Só carrega os dados completos se não estiver na tela de pagamento
-if (!document.body.classList.contains('payment-theme') && !document.body.classList.contains('checkout-theme')) {
-  document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('pageshow', (event) => {
+  if (!document.body.classList.contains('payment-theme') && !document.body.classList.contains('checkout-theme')) {
     carregarDados();
-  });
-}
+  }
+});
