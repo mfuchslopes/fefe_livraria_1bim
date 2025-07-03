@@ -1,5 +1,5 @@
 // crud-livros.js
-const loginBtn = document.getElementById('crud-livros/genres');
+const loginBtn = document.getElementById('crud-livros');
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
     window.location.href = '/html/admin/crud-livros.html';

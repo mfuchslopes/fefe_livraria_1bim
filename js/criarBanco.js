@@ -49,6 +49,7 @@ db.serialize(() => {
     FOREIGN KEY (id_genero) REFERENCES generos(id)
   )`);
   db.run(`CREATE TABLE usuarios (
+    id INTEGER PRIMARY KEY AUTOINCRMENT,
     nome TEXT,
     cpf TEXT,
     email TEXT PRIMARY KEY,
@@ -107,14 +108,6 @@ db.serialize(() => {
     );
   }
 
-  // Usuário administrador
-  db.run(
-    "INSERT INTO usuarios (nome, cpf, email, senha, cep, tipo) VALUES (?, ?, ?, ?, ?, ?)",
-    ['Maria Fernanda Fuchs Lopes', '10446813907', 'mfuchslopes@gmail.com', 'Chanel123', '87302170', 'adm'],
-    err => {
-      if (err) console.error("Erro ao inserir usuário adm:", err.message);
-    }
-  );
-
+ 
   console.log('✅ Banco criado e populado com sucesso!');
 });

@@ -6,7 +6,6 @@ document.getElementById('cadastro-form').addEventListener('submit', async functi
   const email = document.getElementById('email').value;
   const cpf = document.getElementById('cpf').value;
   const cep = document.getElementById('cep').value;
-  const endereco = document.getElementById('endereco').value;
   const senha = document.getElementById('senha').value;
   const senha2 = document.getElementById('senha2').value;
   if (senha !== senha2) {
