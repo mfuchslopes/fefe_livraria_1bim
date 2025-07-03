@@ -2,8 +2,21 @@
 let livros = [];
 let generos = [];
 let livroGeneros = [];
-const ID_USUARIO = 'mfuchslopes@gmail.com';
 
+
+// Função para obter o id do usuário logado ou criar um id anônimo persistente
+function getUsuarioAtual() {
+  // Primeiro tenta pegar o id do usuário logado
+  let id = localStorage.getItem('usuario_id');
+  if (id) return id;
+  // Se não houver usuário logado, cria um id anônimo persistente
+  id = localStorage.getItem('anon_id');
+  if (!id) {
+    id = 'anon-' + crypto.randomUUID();
+    localStorage.setItem('anon_id', id);
+  }
+  return id;
+}
 
 async function carregarDados() {
   try {
@@ -11,7 +24,7 @@ async function carregarDados() {
       fetch('/api/livros'),
       fetch('/api/generos'),
       fetch('/api/livroGenero'),
-      fetch(`/api/carrinho/${ID_USUARIO}`)
+      fetch(`/api/carrinho/${getUsuarioAtual()}`)
     ]);
 
     livros = await livrosResp.json();
@@ -117,6 +130,15 @@ if (!document.body.classList.contains('payment-theme')) {
   });
 }
 
+// Fecha overlay do carrinho ao clicar fora do conteúdo
+if (cartOverlay) {
+  cartOverlay.addEventListener('mousedown', function(e) {
+    if (e.target === cartOverlay) {
+      cartOverlay.classList.add('hidden');
+    }
+  });
+}
+
 function updateCartUI() {
   const ul = document.getElementById('cart-items');
   const totalEl = document.getElementById('cart-total');
@@ -143,7 +165,7 @@ async function adicionarAoCarrinho(idLivro, titulo, preco) {
   await fetch('/api/carrinho', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id_usuario: ID_USUARIO, id_livro: idLivro, quantidade: 1 })
+    body: JSON.stringify({ id_usuario: getUsuarioAtual(), id_livro: idLivro, quantidade: 1 })
   });
   updateCartUI();
 }
@@ -156,7 +178,7 @@ async function removerDoCarrinho(titulo) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id_usuario: ID_USUARIO,
+        id_usuario: getUsuarioAtual(),
         titulo,
         removerApenasUm: true
       })
@@ -236,7 +258,7 @@ if (!document.body.classList.contains('payment-theme')) {
     });
     if (result.isConfirmed) {
       cartItems = [];
-      await fetch(`/api/carrinho/${ID_USUARIO}`, { method: 'DELETE' });
+      await fetch(`/api/carrinho/${getUsuarioAtual()}`, { method: 'DELETE' });
       updateCartUI();
       Swal.fire({
         title: 'Carrinho limpo!',
@@ -251,12 +273,11 @@ if (!document.body.classList.contains('payment-theme')) {
   });
 }
 
-
 // Se for a página de checkout...
 if (document.body.classList.contains('checkout-theme')) {
   (async () => {
     // Busca o carrinho atualizado da API
-    const carrinhoResp = await fetch(`/api/carrinho/${ID_USUARIO}`);
+    const carrinhoResp = await fetch(`/api/carrinho/${getUsuarioAtual()}`);
     const cart = (await carrinhoResp.json()).map(item => ({
       id: item.id,
       title: item.titulo,
@@ -291,7 +312,7 @@ if (document.body.classList.contains('checkout-theme')) {
 if (document.body.classList.contains('payment-theme')) {
   (async () => {
     // Busca o carrinho atualizado da API
-    const carrinhoResp = await fetch(`/api/carrinho/${ID_USUARIO}`);
+    const carrinhoResp = await fetch(`/api/carrinho/${getUsuarioAtual()}`);
     const cart = (await carrinhoResp.json()).map(item => ({
       id: item.id,
       title: item.titulo,
@@ -321,7 +342,7 @@ if (document.body.classList.contains('payment-theme')) {
           color: 'midnightblue'
         });
         // Limpa o carrinho no banco de dados
-        await fetch(`/api/carrinho/${ID_USUARIO}`, { method: 'DELETE' });
+        await fetch(`/api/carrinho/${getUsuarioAtual()}`, { method: 'DELETE' });
         window.location.href = 'index.html';
       });
     }
@@ -347,7 +368,7 @@ function confettiAnimation() {
 
 async function pagarPIX() {
   // Busca o carrinho atualizado da API
-  const carrinhoResp = await fetch(`/api/carrinho/${ID_USUARIO}`);
+  const carrinhoResp = await fetch(`/api/carrinho/${getUsuarioAtual()}`);
   const cart = (await carrinhoResp.json()).map(item => ({
     id: item.id,
     title: item.titulo,
@@ -435,5 +456,146 @@ async function pagarPIX() {
 window.addEventListener('pageshow', (event) => {
   if (!document.body.classList.contains('payment-theme') && !document.body.classList.contains('checkout-theme')) {
     carregarDados();
+  }
+});
+
+// Overlay de informações do usuário logado
+function validarCPF(cpf) {
+  cpf = cpf.replace(/\D/g, '');
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+  let soma = 0, resto;
+  for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.substring(9, 10))) return false;
+  soma = 0;
+  for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.substring(10, 11))) return false;
+  return true;
+}
+
+function senhaForte(s) {
+  return s.length >= 8 && /[A-Z]/.test(s) && /[a-z]/.test(s) && /\d/.test(s) && /[^A-Za-z0-9]/.test(s);
+}
+
+async function buscarEnderecoPorCEP(cep) {
+  cep = cep.replace(/\D/g, '');
+  if (cep.length !== 8) return '';
+  const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+  const data = await resp.json();
+  if (!data.erro) {
+    return `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+  }
+  return '';
+}
+
+function mostrarOverlayUsuario(usuario) {
+  let overlay = document.getElementById('user-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'user-overlay';
+    overlay.className = 'user-overlay';
+    overlay.innerHTML = `
+      <div class="user-content">
+        <h2>Minha Conta</h2>
+        <form id="form-user-edit">
+          <label>Nome:<input type="text" id="user-nome" required></label>
+          <label>Email:<input type="email" id="user-email" required disabled></label>
+          <label>CPF:<input type="text" id="user-cpf" required></label>
+          <label>CEP:<input type="text" id="user-cep" required></label>
+          <label>Endereço:<input type="text" id="user-endereco" required></label>
+          <label>Nova Senha:<input type="password" id="user-senha"></label>
+          <label>Confirmar Senha:<input type="password" id="user-senha2"></label>
+          <button type="submit">Salvar Alterações</button>
+          <button type="button" id="fechar-user-overlay">Fechar</button>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  overlay.classList.remove('hidden');
+  document.getElementById('user-nome').value = usuario.nome;
+  document.getElementById('user-email').value = usuario.email;
+  document.getElementById('user-cpf').value = usuario.cpf;
+  document.getElementById('user-cep').value = usuario.cep;
+  document.getElementById('user-endereco').value = usuario.endereco;
+
+  document.getElementById('user-cep').addEventListener('blur', async function() {
+    const endereco = await buscarEnderecoPorCEP(this.value);
+    if (endereco) document.getElementById('user-endereco').value = endereco;
+  });
+
+  document.getElementById('fechar-user-overlay').onclick = () => overlay.classList.add('hidden');
+
+  document.getElementById('form-user-edit').onsubmit = async function(e) {
+    e.preventDefault();
+    const nome = document.getElementById('user-nome').value;
+    const cpf = document.getElementById('user-cpf').value;
+    const cep = document.getElementById('user-cep').value;
+    const endereco = document.getElementById('user-endereco').value;
+    const senha = document.getElementById('user-senha').value;
+    const senha2 = document.getElementById('user-senha2').value;
+    if (!validarCPF(cpf)) {
+      Swal.fire('CPF inválido!'); return;
+    }
+    if (senha && !senhaForte(senha)) {
+      Swal.fire('A senha deve ter pelo menos 8 caracteres, maiúscula, minúscula, número e símbolo!'); return;
+    }
+    if (senha && senha !== senha2) {
+      Swal.fire('As senhas não coincidem!'); return;
+    }
+    if (cep.length !== 8) {
+      Swal.fire('CEP inválido!'); return;
+    }
+    // Atualiza usuário via API
+    const id = getUsuarioAtual();
+    const body = { id, nome, cpf, cep, endereco };
+    if (senha) body.senha = senha;
+    const resp = await fetch('/api/usuario', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+    if (resp.ok) {
+      Swal.fire('Dados atualizados com sucesso!');
+      overlay.classList.add('hidden');
+    } else {
+      Swal.fire(data.erro || 'Erro ao atualizar dados');
+    }
+  };
+}
+
+// Evento do botão login para mostrar overlay se logado
+function ativarOverlayUsuario() {
+  const loginBtn2 = document.getElementById('login-button');
+  if (loginBtn2 && localStorage.getItem('usuario_id')) {
+    loginBtn2.onclick = async () => {
+      const id = getUsuarioAtual();
+      const resp = await fetch(`/api/usuario/${id}`);
+      if (resp.ok) {
+        const usuario = await resp.json();
+        mostrarOverlayUsuario(usuario);
+      } else {
+        Swal.fire('Erro ao buscar dados do usuário!');
+      }
+    };
+  }
+}
+
+// Ativa o overlay ao carregar a página e também após navegação SPA
+window.addEventListener('DOMContentLoaded', ativarOverlayUsuario);
+window.addEventListener('pageshow', ativarOverlayUsuario);
+
+// Fecha overlay do usuário ao clicar fora do conteúdo
+window.addEventListener('mousedown', function(e) {
+  const overlay = document.getElementById('user-overlay');
+  if (overlay && !overlay.classList.contains('hidden')) {
+    const content = overlay.querySelector('.cart-content, .user-content');
+    if (e.target === overlay) {
+      overlay.classList.add('hidden');
+    }
   }
 });

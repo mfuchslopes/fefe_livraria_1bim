@@ -1,4 +1,11 @@
 // crud-livros.js
+const loginBtn = document.getElementById('crud-livros/genres');
+if (loginBtn) {
+  loginBtn.addEventListener('click', () => {
+    window.location.href = '/html/admin/crud-livros.html';
+  });
+}
+
 
 document.getElementById('form-livro').addEventListener('submit', async function(e) {
   e.preventDefault();

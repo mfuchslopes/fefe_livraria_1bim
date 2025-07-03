@@ -54,13 +54,13 @@ app.get('/api/livroGenero', (req, res) => {
 });
 
 function lerUsuarios() {
-  const csv = fs.readFileSync('/csv/usuarios.csv', 'utf8');
+  const csv = fs.readFileSync(path.join(__dirname, '../csv/usuarios.csv'), 'utf8');
   return parse(csv, { columns: true });
 }
 
 function salvarUsuarios(usuarios) {
   const csv = stringify(usuarios, { header: true });
-  fs.writeFileSync('./csv/usuarios.csv', csv);
+  fs.writeFileSync(path.join(__dirname, '../csv/usuarios.csv'), csv);
 }
 
 // Cadastro
@@ -89,9 +89,8 @@ app.post('/api/login', (req, res) => {
     return res.status(401).json({ erro: 'Usuário ou senha inválidos' });
   }
   const token = jwt.sign({ id: user.id, tipo: user.tipo }, SECRET, { expiresIn: '1d' });
-  res.json({ token, tipo: user.tipo });
+  res.json({ token, tipo: user.tipo, id: user.id });
 });
-
 
 // 🔹 Rota para obter carrinho de um usuário
 app.get('/api/carrinho/:id_usuario', (req, res) => {
@@ -185,6 +184,34 @@ app.delete('/api/carrinho/:id_usuario', (req, res) => {
   });
 });
 
+// Buscar dados do usuário por id
+app.get('/api/usuario/:id', (req, res) => {
+  const id = req.params.id;
+  const usuarios = lerUsuarios();
+  const user = usuarios.find(u => u.id === id);
+  if (!user) return res.status(404).json({ erro: 'Usuário não encontrado' });
+  // Não retorna hash da senha
+  const { senha_hash, ...dados } = user;
+  res.json(dados);
+});
+
+// Atualizar dados do usuário
+app.put('/api/usuario', (req, res) => {
+  const { id, nome, cpf, cep, endereco, senha } = req.body;
+  let usuarios = lerUsuarios();
+  const idx = usuarios.findIndex(u => u.id === id);
+  if (idx === -1) return res.status(404).json({ erro: 'Usuário não encontrado' });
+  // Validações básicas (validação completa é feita no frontend)
+  usuarios[idx].nome = nome;
+  usuarios[idx].cpf = cpf;
+  usuarios[idx].cep = cep;
+  usuarios[idx].endereco = endereco;
+  if (senha) {
+    usuarios[idx].senha_hash = bcrypt.hashSync(senha, 10);
+  }
+  salvarUsuarios(usuarios);
+  res.json({ sucesso: true });
+});
 
 app.use(express.static(path.join(__dirname, '..')));
 

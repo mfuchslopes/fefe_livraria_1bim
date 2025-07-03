@@ -10,10 +10,16 @@ body {
     font-family: 'Georgia', serif;
     background-color: #2e2b2b;
     color: #f5f5dc;
+    padding-top: 16.6vh; /* Adicionado para evitar que o conteúdo fique embaixo do header fixo */
 }
 
-/* Header */
+/* Header fixo no topo */
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 2000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,42 +29,22 @@ header {
     color: #ab9e9e;
 }
 
-.header-left h1 {
-    font-family:'Times New Roman', Times, serif;
-    font-size: 2.5rem;
-    color: #857b7b;
-    text-align: center;
-}
-
-.header-center p {
-    font-family: 'Georgia', serif;
-    font-size: 1.2rem;
-    text-align: center;
-}
-
-.header-right button, .header-between button {
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-}
-
-
-/* Carrinho */
+/* Overlay do carrinho fixo no canto direito */
 #cart-overlay {
-    position: absolute;
+    position: fixed;
     top: 16.6vh;
     right: 1rem;
-    width: flex;
-    height: flex;
     background-color: #857b7b;
     color: #f5f5dc;
     border: 2px solid #2e2b2b;
     padding: 1rem;
-    z-index: 1000;
+    z-index: 1001;
     border-radius: 10px;
+    min-width: 320px;
+    max-width: 400px;
+    box-shadow: 0 2px 16px #0002;
+    display: none;
 }
-
 
 .cart-content h2 {
     margin-bottom: 1rem;
@@ -80,8 +66,37 @@ header {
     border-radius: 8px;
     width: 100%;
     align-self: center;
-  }
+}
+#cart-overlay:not(.hidden) { display: flex; flex-direction: column; }
 
+/* Overlay do usuário fixo no canto direito, igual ao carrinho */
+#user-overlay {
+    position: fixed;
+    top: 16.6vh;
+    right: 1rem;
+    background-color: #857b7b;
+    color: #f5f5dc;
+    border: 2px solid #2e2b2b;
+    padding: 1rem;
+    z-index: 1002;
+    border-radius: 10px;
+    min-width: 320px;
+    max-width: 400px;
+    box-shadow: 0 2px 16px #0002;
+    display: none;
+}
+#user-overlay .cart-content.user-content {
+    background-color: #403c3c;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    align-self: center;
+}
+#user-overlay:not(.hidden) { display: flex; flex-direction: column; }
+#user-overlay label { display: block; margin: 0.5em 0 0.2em; }
+#user-overlay input { width: 100%; margin-bottom: 0.7em; }
+#user-overlay button { margin-right: 0.5em; }
+#user-overlay.hidden { display: none !important; }
 
 /* Intro */
 .intro {

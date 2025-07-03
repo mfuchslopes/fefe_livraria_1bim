@@ -1,1 +1,3 @@
-id;nome;email;senha_hash;tipo;cpf;cep;endereco
+id,nome,email,senha_hash,tipo,cpf,cep,endereco
+1,Maria Fernanda,mfuchslopes@gmail.com,$2b$10$EPF5QH97amTawGvn3jjfC.x77TfvAaMpl2aKhVJNU23Sb0yhKjqh.,admin,10446813907,87300150,"Rua Pitanga, Centro, Campo Mourão - PR"
+2,Maria Chanel,chanellinda@gmail.com,$2b$10$gTSISvoTGbJOUwVyKDrwZuUo.kQ.s59OU9P48/dfEZHlOVmCJ12dK,cliente,12345678911,87300170,"Rua Chafic Bader Maluf, Jardim Country Club, Campo Mourão - PR"
