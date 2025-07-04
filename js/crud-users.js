@@ -1,12 +1,5 @@
 // crud-users.js
 
-// login.js
-const loginBtn = document.getElementById('crud-users');
-if (loginBtn) {
-  loginBtn.addEventListener('click', () => {
-    window.location.href = '/html/admin/crud-users.html';
-  });
-}
 
 async function carregarUsuarios() {
   const resp = await fetch('/api/usuarios');

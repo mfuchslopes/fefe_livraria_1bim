@@ -1,3 +1,4 @@
+// criarBancoUserCorrigido.js
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const path = require('path');
@@ -9,15 +10,15 @@ const csv = fs.readFileSync(csvPath, 'utf8');
 const usuarios = parse(csv, { columns: true });
 
 db.serialize(() => {
-  db.run('DELETE FROM usuarios'); // Limpa a tabela antes de importar
+  db.run('DELETE FROM usuarios');
   usuarios.forEach(u => {
     db.run(
-      `INSERT INTO usuarios (nome, cpf, email, senha, cep, tipo) VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO usuarios (nome, cpf, email, senha_hash, cep, tipo) VALUES (?, ?, ?, ?, ?, ?)`,
       [u.nome, u.cpf, u.email, u.senha_hash, u.cep, u.tipo],
       err => {
         if (err) console.error('Erro ao importar usuário:', err.message);
       }
     );
   });
-  console.log('Usuários importados do CSV para o banco!');
+  console.log('✅ Usuários importados do CSV para o banco!');
 });

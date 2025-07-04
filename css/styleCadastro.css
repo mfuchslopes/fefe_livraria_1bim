@@ -1,0 +1,99 @@
+/* ---------- Estilo da página de Cadastro ---------- */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, #f6f0e6, #fdfaf6);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+
+.cadastro-main {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+.cadastro-main h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #5d3a00;
+}
+
+/* Formulário de cadastro */
+#cadastro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#cadastro-form label {
+  text-align: left;
+  font-weight: bold;
+  color: #5d3a00;
+}
+
+#cadastro-form input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fdfaf6;
+  transition: border 0.3s;
+}
+
+#cadastro-form input:focus {
+  outline: none;
+  border-color: #c09254;
+  background-color: #fff;
+}
+
+/* Botão de cadastro */
+#cadastro-form button {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #c09254;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+#cadastro-form button:hover {
+  background-color: #a87932;
+}
+
+/* Link para login */
+.login-links {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #5d3a00;
+}
+
+.login-links a {
+  color: #a87932;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-links a:hover {
+  color: #c09254;
+}
+
+/* Responsividade extra */
+@media (max-width: 500px) {
+  .cadastro-main {
+    padding: 30px 20px;
+  }
+}

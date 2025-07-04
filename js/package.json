@@ -12,10 +12,12 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "csv-parse": "^5.6.0",
     "csv-stringify": "^6.5.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
     "nodemailer": "^7.0.4",
     "sqlite3": "^5.1.7"
   }

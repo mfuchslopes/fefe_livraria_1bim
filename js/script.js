@@ -599,3 +599,18 @@ window.addEventListener('mousedown', function(e) {
     }
   }
 });
+
+const crudLivrosBtn = document.getElementById('crud-livros');
+if (crudLivrosBtn) {
+  crudLivrosBtn.addEventListener('click', () => {
+    window.location.href = '/html/admin/crud-livros.html';
+  });
+}
+
+// login.js
+const crudUsersBtn = document.getElementById('crud-users');
+if (crudUsersBtn) {
+  crudUsersBtn.addEventListener('click', () => {
+    window.location.href = '/html/admin/crud-users.html';
+  });
+}

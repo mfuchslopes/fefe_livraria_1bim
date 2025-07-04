@@ -1,0 +1,109 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fonte suave e paleta literária */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, #f6f0e6, #fdfaf6);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Estilo principal da página de login */
+.login-main {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+/* Animação suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-main h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #5d3a00;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  text-align: left;
+  font-weight: bold;
+  color: #5d3a00;
+}
+
+input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fdfaf6;
+  transition: border 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #c09254;
+  background-color: #fff;
+}
+
+/* Botão */
+button {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #c09254;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #a87932;
+}
+
+/* Links adicionais */
+.login-links {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #5d3a00;
+}
+
+.login-links a {
+  color: #a87932;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-links a:hover {
+  color: #c09254;
+}

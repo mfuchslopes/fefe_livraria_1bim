@@ -1,6 +1,8 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const PORT = 3000;
 const fs = require('fs');
@@ -12,7 +14,9 @@ const SECRET = 'segredo-super-seguro'; // Troque por env seguro
 
 const db = new sqlite3.Database('./livraria.db');
 
+app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Rota para listar todos os livros
 app.get('/api/livros', (req, res) => {
@@ -52,6 +56,75 @@ app.get('/api/livroGenero', (req, res) => {
     }
   });
 });
+
+// Adicionar um novo livro
+app.post('/api/livros', (req, res) => {
+  const { titulo, preco, descricao, imagem, generos } = req.body;
+  const insertLivro = 'INSERT INTO livros (titulo, preco, descricao, imagem) VALUES (?, ?, ?, ?)';
+
+  db.run(insertLivro, [titulo, preco, descricao, imagem], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    const idLivro = this.lastID;
+
+    if (Array.isArray(generos)) {
+      const insertRelacao = db.prepare('INSERT INTO livroGenero (id_livro, id_genero) VALUES (?, ?)');
+      generos.forEach(id_genero => {
+        insertRelacao.run(idLivro, id_genero);
+      });
+      insertRelacao.finalize();
+    }
+
+    res.status(201).json({ id: idLivro });
+  });
+});
+
+// Deletar um livro
+app.delete('/api/livros/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.run('DELETE FROM livroGenero WHERE id_livro = ?', [id], function () {
+    db.run('DELETE FROM livros WHERE id = ?', [id], function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ deleted: true });
+    });
+  });
+});
+
+// Editar um livro
+app.put('/api/livros/:id', (req, res) => {
+  const id = req.params.id;
+  const { titulo, preco, descricao, imagem, generos } = req.body;
+
+  const sql = 'UPDATE livros SET titulo = ?, preco = ?, descricao = ?, imagem = ? WHERE id = ?';
+  db.run(sql, [titulo, preco, descricao, imagem, id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+
+    db.run('DELETE FROM livroGenero WHERE id_livro = ?', [id], function () {
+      if (Array.isArray(generos)) {
+        const insertRelacao = db.prepare('INSERT INTO livroGenero (id_livro, id_genero) VALUES (?, ?)');
+        generos.forEach(id_genero => {
+          insertRelacao.run(id, id_genero);
+        });
+        insertRelacao.finalize();
+      }
+      res.json({ updated: true });
+    });
+  });
+});
+
+// Buscar um livro por ID (incluindo gêneros)
+app.get('/api/livros/:id', (req, res) => {
+  const id = req.params.id;
+  db.get('SELECT * FROM livros WHERE id = ?', [id], (err, livro) => {
+    if (err || !livro) return res.status(404).json({ erro: 'Livro não encontrado' });
+    db.all('SELECT id_genero FROM livroGenero WHERE id_livro = ?', [id], (err2, generos) => {
+      if (err2) return res.status(500).json({ erro: 'Erro ao buscar gêneros' });
+      livro.generos = generos.map(g => g.id_genero);
+      res.json(livro);
+    });
+  });
+});
+
 
 function lerUsuarios() {
   const csv = fs.readFileSync(path.join(__dirname, '../csv/usuarios.csv'), 'utf8');
@@ -211,6 +284,28 @@ app.put('/api/usuario', (req, res) => {
   }
   salvarUsuarios(usuarios);
   res.json({ sucesso: true });
+});
+
+const multer = require('multer');
+
+// Configura o destino e nome do arquivo
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../img'));
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage });
+
+app.post('/api/upload-imagem', upload.single('imagem'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ erro: 'Nenhum arquivo enviado' });
+  }
+  // Caminho relativo que será salvo no banco
+  const caminhoRelativo = `../../../img/${req.file.filename}`;
+  res.json({ caminho: caminhoRelativo });
 });
 
 app.use(express.static(path.join(__dirname, '..')));
