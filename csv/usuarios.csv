@@ -1,3 +1,4 @@
 id,nome,cpf,email,senha_hash,cep,tipo
 1,Maria Fernanda,10446813907,mfuchslopes@gmail.com,$2b$10$EPF5QH97amTawGvn3jjfC.x77TfvAaMpl2aKhVJNU23Sb0yhKjqh.,87300150,admin
-2,Maria Chanel,12345678911,chanellinda@gmail.com,$2b$10$gTSISvoTGbJOUwVyKDrwZuUo.kQ.s59OU9P48/dfEZHlOVmCJ12dK,87300170,cliente
+2,Pavlova,695.634.629-04,lolota123@gmail.com,$2b$10$Fvj/j49wEh9K5Tehcwa9eexz3olaasQHoVh3heDxwXr/YwQssMxte,87302-170,cliente
+3,Maria Chanel,128.224.081-38,chanellinda@gmail,$2b$10$h54LIXp7KvZbYMN.0mdes.cLK9BpMqFoi4bZCrNIwh3tYlvFuMFjK,14015-040,cliente

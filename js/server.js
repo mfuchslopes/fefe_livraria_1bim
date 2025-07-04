@@ -125,45 +125,98 @@ app.get('/api/livros/:id', (req, res) => {
   });
 });
 
-
-function lerUsuarios() {
-  const csv = fs.readFileSync(path.join(__dirname, '../csv/usuarios.csv'), 'utf8');
-  return parse(csv, { columns: true });
-}
-
-function salvarUsuarios(usuarios) {
-  const csv = stringify(usuarios, { header: true });
-  fs.writeFileSync(path.join(__dirname, '../csv/usuarios.csv'), csv);
-}
-
-// Cadastro
 app.post('/api/cadastro', (req, res) => {
   const { nome, email, cpf, cep, endereco, senha } = req.body;
-  let usuarios = lerUsuarios();
-  if (usuarios.find(u => u.email === email)) {
-    return res.status(400).json({ erro: 'E-mail já cadastrado' });
-  }
-  const senha_hash = bcrypt.hashSync(senha, 10);
-  const novo = {
-    id: (usuarios.length + 1).toString(),
-    nome, email, senha_hash, tipo: 'cliente', cpf, cep, endereco
-  };
-  usuarios.push(novo);
-  salvarUsuarios(usuarios);
-  res.json({ sucesso: true });
+  db.get('SELECT * FROM usuarios WHERE email = ?', [email], (err, row) => {
+    if (row) return res.status(400).json({ erro: 'E-mail já cadastrado' });
+    const senha_hash = bcrypt.hashSync(senha, 10);
+    db.run('INSERT INTO usuarios (nome, email, senha_hash, tipo, cpf, cep, endereco) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [nome, email, senha_hash, 'cliente', cpf, cep, endereco],
+      function (err2) {
+        if (err2) return res.status(500).json({ erro: err2.message });
+        res.json({ sucesso: true });
+      });
+  });
 });
 
-// Login
+
+app.post('/api/cadastro', (req, res) => {
+  const { nome, email, cpf, cep, endereco, senha } = req.body;
+  db.get('SELECT * FROM usuarios WHERE email = ?', [email], (err, row) => {
+    if (row) return res.status(400).json({ erro: 'E-mail já cadastrado' });
+    const senha_hash = bcrypt.hashSync(senha, 10);
+    db.run('INSERT INTO usuarios (nome, email, senha_hash, tipo, cpf, cep, endereco) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [nome, email, senha_hash, 'cliente', cpf, cep, endereco],
+      function (err2) {
+        if (err2) return res.status(500).json({ erro: err2.message });
+        res.json({ sucesso: true });
+      });
+  });
+});
+
 app.post('/api/login', (req, res) => {
   const { email, senha } = req.body;
-  const usuarios = lerUsuarios();
-  const user = usuarios.find(u => u.email === email);
-  if (!user || !bcrypt.compareSync(senha, user.senha_hash)) {
-    return res.status(401).json({ erro: 'Usuário ou senha inválidos' });
-  }
-  const token = jwt.sign({ id: user.id, tipo: user.tipo }, SECRET, { expiresIn: '1d' });
-  res.json({ token, tipo: user.tipo, id: user.id });
+  db.get('SELECT * FROM usuarios WHERE email = ?', [email], (err, user) => {
+    if (!user || !bcrypt.compareSync(senha, user.senha_hash)) {
+      return res.status(401).json({ erro: 'Usuário ou senha inválidos' });
+    }
+    const token = jwt.sign({ id: user.id, tipo: user.tipo }, SECRET, { expiresIn: '1d' });
+    res.json({ token, tipo: user.tipo, id: user.id });
+  });
 });
+
+app.get('/api/usuarios', (req, res) => {
+  db.all('SELECT id, nome, email, tipo, cpf, cep FROM usuarios', [], (err, rows) => {
+    if (err) return res.status(500).json({ erro: err.message });
+    res.json(rows);
+  });
+});
+
+app.get('/api/usuarios/:id', (req, res) => {
+  const { id } = req.params;
+  db.get('SELECT id, nome, email, tipo, cpf, cep FROM usuarios WHERE id = ?', [id], (err, row) => {
+    if (!row) return res.status(404).json({ erro: 'Usuário não encontrado' });
+    res.json(row);
+  });
+});
+
+app.post('/api/usuarios', (req, res) => {
+  const { nome, cpf, email, cep, senha, tipo } = req.body;
+  const senha_hash = bcrypt.hashSync(senha, 10);
+  db.run('INSERT INTO usuarios (nome, cpf, email, cep, tipo, senha_hash) VALUES (?, ?, ?, ?, ?, ?)',
+    [nome, cpf, email, cep, tipo, senha_hash],
+    function (err) {
+      if (err) return res.status(500).json({ erro: err.message });
+      res.status(201).json({ sucesso: true });
+    });
+});
+
+app.put('/api/usuarios/:id', (req, res) => {
+  const { id } = req.params;
+  const { nome, cpf, email, cep, senha, tipo } = req.body;
+
+  db.get('SELECT * FROM usuarios WHERE id = ?', [id], (err, user) => {
+    if (!user) return res.status(404).json({ erro: 'Usuário não encontrado' });
+
+    const senha_hash = senha ? bcrypt.hashSync(senha, 10) : user.senha_hash;
+
+    db.run('UPDATE usuarios SET nome = ?, cpf = ?, email = ?, cep = ?, tipo = ?, senha_hash = ? WHERE id = ?',
+      [nome, cpf, email, cep, tipo, senha_hash, id],
+      function (err2) {
+        if (err2) return res.status(500).json({ erro: err2.message });
+        res.json({ sucesso: true });
+      });
+  });
+});
+
+app.delete('/api/usuarios/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM usuarios WHERE id = ?', [id], function (err) {
+    if (err) return res.status(500).json({ erro: err.message });
+    res.json({ sucesso: true });
+  });
+});
+
 
 // 🔹 Rota para obter carrinho de um usuário
 app.get('/api/carrinho/:id_usuario', (req, res) => {
