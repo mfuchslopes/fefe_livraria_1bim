@@ -235,6 +235,52 @@ app.delete('/api/carrinho/:id_usuario', (req, res) => {
   });
 });
 
+app.post('/api/carrinho/migrar', (req, res) => {
+  const { de, para, estrategia } = req.body;
+
+  db.all('SELECT * FROM carrinho WHERE id_usuario = ?', [de], (err, items) => {
+    if (err) return res.status(500).json({ erro: err.message });
+
+    if (estrategia === 'substituir') {
+      // Limpa carrinho do usuário destino
+      db.run('DELETE FROM carrinho WHERE id_usuario = ?', [para], (err2) => {
+        if (err2) return res.status(500).json({ erro: err2.message });
+
+        // Copia todos do carrinho anônimo
+        const stmt = db.prepare('INSERT INTO carrinho (id_usuario, id_livro, quantidade) VALUES (?, ?, ?)');
+        items.forEach(item => {
+          stmt.run(para, item.id_livro, item.quantidade);
+        });
+        stmt.finalize();
+        res.json({ sucesso: true });
+      });
+    } else if (estrategia === 'mesclar') {
+      const tasks = items.map(item =>
+        new Promise((resolve, reject) => {
+          db.get('SELECT quantidade FROM carrinho WHERE id_usuario = ? AND id_livro = ?', [para, item.id_livro], (err2, row) => {
+            if (err2) return reject(err2);
+            if (row) {
+              db.run('UPDATE carrinho SET quantidade = quantidade + ? WHERE id_usuario = ? AND id_livro = ?', [item.quantidade, para, item.id_livro], err3 => {
+                if (err3) reject(err3);
+                else resolve();
+              });
+            } else {
+              db.run('INSERT INTO carrinho (id_usuario, id_livro, quantidade) VALUES (?, ?, ?)', [para, item.id_livro, item.quantidade], err3 => {
+                if (err3) reject(err3);
+                else resolve();
+              });
+            }
+          });
+        })
+      );
+      Promise.all(tasks).then(() => res.json({ sucesso: true })).catch(err => res.status(500).json({ erro: err.message }));
+    } else {
+      res.status(400).json({ erro: 'Estratégia inválida' });
+    }
+  });
+});
+
+
 app.get('/api/usuarios', (req, res) => {
   db.all('SELECT id, nome, email, tipo, cpf, cep FROM usuarios', [], (err, rows) => {
     if (err) return res.status(500).json({ erro: err.message });

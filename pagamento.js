@@ -1,27 +1,28 @@
 
 function getUsuarioAtualObj() {
-  let usuario = localStorage.getItem('usuario_id');
-  console.log(usuario);
-  if (usuario) {
-    try {
-      return JSON.parse(usuario);
-    } catch {
-      return null;
+  try {
+    const usuario = JSON.parse(localStorage.getItem('usuario_id'));
+    if (usuario && typeof usuario.id === 'number') {
+      return usuario;
     }
-  }
+  } catch {}
   return null;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const usuario = getUsuarioAtualObj();
+
+  if (!usuario) {
+    // Redireciona para login, exigindo login para pagamento
+    window.location.href = 'login.html?redirect=pagamento';
+    return;
+  }
+
   const h1 = document.createElement('h1');
   h1.style.marginTop = '2rem';
   h1.style.textAlign = 'center';
-
-  if (usuario && usuario.nome) {
-    h1.textContent = `Obrigada por fazer sua compra conosco, ${usuario.nome}!!`;
-    document.body.prepend(h1);
-  }
+  h1.textContent = `Obrigada por fazer sua compra conosco, ${usuario.nome}!!`;
+  document.body.prepend(h1);
 });
 
 (async () => {
@@ -117,9 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
             background: 'lavenderblush',          // Cor de fundo
             color: 'midnightblue'                 // Cor do texto
         });
-        cartItems = []; // Limpa o array
-        localStorage.removeItem('cartItems'); // Limpa o localStorage
-        window.location.href = 'index.html'; // Redireciona para a página inicial
+        await fetch(`/api/carrinho/${usuarioId}`, { method: 'DELETE' });
+        window.location.href = 'index.html';
+         // Redireciona para a página inicial
         });
     });
 
@@ -174,7 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Busca o carrinho atualizado da API
     const usuario = getUsuarioAtualObj();
-    const usuarioId = usuario && usuario.id ? usuario.id : '';
+    if (!usuario) return; // proteção extra, caso seja usado fora do DOMContentLoaded
+    const usuarioId = usuario.id;
     console.log(usuarioId);
     const carrinhoResp = await fetch(`/api/carrinho/${usuarioId}`);
     const cart = (await carrinhoResp.json()).map(item => ({
@@ -233,7 +235,8 @@ function confettiAnimation() {
 async function pagarPIX() {
   // Busca o carrinho atualizado da API
   const usuario = getUsuarioAtualObj();
-  const usuarioId = usuario && usuario.id ? usuario.id : '';
+  if (!usuario) return; // proteção extra, caso seja usado fora do DOMContentLoaded
+  const usuarioId = usuario.id;
   const carrinhoResp = await fetch(`/api/carrinho/${usuarioId}`);
   const cart = (await carrinhoResp.json()).map(item => ({
     id: item.id,

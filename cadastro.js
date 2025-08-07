@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     numero: document.getElementById('senha-numero'),
     especial: document.getElementById('senha-especial')
   };
-
+ 
   function resetarRequisitosSenha() {
     senhaRequisitos.style.display = 'none';
     for (const item of Object.values(requisitos)) {
@@ -128,7 +128,46 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({ email: form.email.value, senha: form.senha.value })
       });
       if (loginResp.ok) {
+
         const userData = await loginResp.json();
+        const anonId = localStorage.getItem('anon_id');
+
+        if (anonId) {
+          const escolha = await Swal.fire({
+            title: 'Qual carrinho deseja usar?',
+            text: 'Você já tinha itens salvos como visitante.',
+            icon: 'question',
+            showCancelButton: true,
+            showDenyButton: true,
+            confirmButtonText: 'Juntar',
+            denyButtonText: 'Usar o atual da conta',
+            cancelButtonText: 'Usar o do visitante',
+            confirmButtonColor: 'seagreen',
+            denyButtonColor: 'midnightblue',
+            cancelButtonColor: 'gray'
+          });
+
+          let estrategia;
+          if (escolha.isConfirmed) estrategia = 'mesclar';
+          else if (escolha.isDenied) estrategia = 'conta';
+          else estrategia = 'anonimo';
+
+          if (estrategia === 'anonimo') {
+            // Não faz nada, apenas mantém anonId e redireciona
+          } else {
+            await fetch('/api/carrinho/migrar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                de: anonId,
+                para: userData.id,
+                estrategia: estrategia === 'conta' ? 'substituir' : 'mesclar'
+              })
+            });
+            localStorage.removeItem('anon_id'); // agora o carrinho é do usuário
+          }
+        }
+
         localStorage.setItem('usuario_id', JSON.stringify({ id: userData.id, nome: userData.nome, tipo: userData.tipo }));
 
         if (redirect === 'pagamento') {
