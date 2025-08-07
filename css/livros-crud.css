@@ -1,0 +1,256 @@
+/* crud-livros.css - Estilo inspirado no style.css principal */
+
+body {
+  background-color: #2e2b2b;
+  color: #f5f5dc;
+  font-family: 'Georgia', serif;
+  padding: 3rem;
+}
+
+h1, h2 {
+  color: #f5f5dc;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 3px #000;
+}
+
+form {
+  background-color: #403c3c;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 10px #0005;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+form label {
+  display: block;
+  margin: 1rem 0 0.3rem;
+  font-weight: bold;
+  color: #f5f5dc;
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #5f5b5b;
+  background-color: #2e2b2b;
+  color: #f5f5dc;
+  font-family: 'Georgia', serif;
+  margin-bottom: 1rem;
+}
+
+form input[type="file"] {
+  background-color: transparent;
+  border: none;
+  color: #f5f5dc;
+}
+
+button {
+  background-color: #685241;
+  color: #f5f5dc;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  padding: 10px 18px;
+  border: 1px solid #362a24;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #362a24;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(2px);
+}
+
+ul#listaLivros {
+  list-style: none;
+  padding: 0;
+}
+
+ul#listaLivros li {
+  background-color: #2a2a2a;
+  border: 1px solid #5c5c5c;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 2px 6px #0003;
+}
+
+ul#listaLivros img {
+  max-width: 120px;
+  border-radius: 6px;
+  border: 1px solid #3b3b3b;
+}
+
+@media (min-width: 768px) {
+  ul#listaLivros li {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  ul#listaLivros img {
+    margin-left: 1rem;
+  }
+}
+
+ul#listaLivros {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+ul#listaLivros li {
+  background-color: #1f1d1d;
+  border: 1px solid #4a4a4a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 6px #0005;
+  gap: 1rem;
+  transition: transform 0.2s ease;
+}
+
+ul#listaLivros li:hover {
+  transform: translateY(-3px);
+}
+
+ul#listaLivros .livro-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+ul#listaLivros .imagem {
+  width: 100px;
+  border-radius: 8px;
+  border: 1px solid #3a3a3a;
+  box-shadow: 0 0 5px #0003;
+}
+
+ul#listaLivros .titulo {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #f5f5dc;
+}
+
+ul#listaLivros .preco {
+  font-size: 1.1rem;
+  color: #d9b87d;
+  font-weight: bold;
+}
+
+ul#listaLivros .descricao {
+  font-style: italic;
+  color: #cfcfcf;
+  margin-top: 0.5rem;
+}
+
+ul#listaLivros .botoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+ul#listaLivros button {
+  flex: 1;
+  min-width: 100px;
+}
+
+ul#listaLivros li.editando {
+  background-color: #2c2626;
+  border: 1px solid #7e6e5d;
+  box-shadow: 0 0 12px #0006;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+ul#listaLivros li.editando .campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+ul#listaLivros li.editando label {
+  font-weight: bold;
+  color: #e5d5c0;
+  font-family: 'Georgia', serif;
+  font-size: 0.95rem;
+}
+
+ul#listaLivros li.editando input,
+ul#listaLivros li.editando textarea,
+ul#listaLivros li.editando select {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-family: 'Georgia', serif;
+  border-radius: 8px;
+  background-color: #1e1a1a;
+  border: 1px solid #5e5043;
+  color: #fdf9f2;
+  box-shadow: inset 0 1px 2px #0007;
+}
+
+ul#listaLivros li.editando input[type="file"] {
+  background-color: transparent;
+  border: none;
+  color: #f5f5dc;
+}
+
+ul#listaLivros li.editando .imagem-atual {
+  width: 120px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  box-shadow: 0 0 8px #0005;
+  margin-top: 0.5rem;
+}
+
+ul#listaLivros li.editando .botoes-edicao {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+ul#listaLivros li.editando .botoes-edicao button {
+  background-color: #75563f;
+  border: 1px solid #362a24;
+  padding: 10px 20px;
+  color: #f5f5dc;
+  font-weight: bold;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+ul#listaLivros li.editando .botoes-edicao button:hover {
+  background-color: #4a3323;
+  transform: translateY(-2px);
+}
+
+ul#listaLivros li.editando .botoes-edicao button:active {
+  transform: translateY(1px);
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Gêneros</title>
+  <link rel="stylesheet" href="./../css/genre-crud.css">
+</head>
+<body>
+  <h1>Gerenciar Gêneros</h1>
+
+  <form id="formGenero">
+    <input type="hidden" id="id" name="id">
+
+    <label for="nome">Nome do gênero:</label>
+    <input type="text" id="nome" name="nome" required placeholder="Ex: Romance Policial">
+
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao" rows="3"></textarea>
+
+    <label for="imagem">Imagem do gênero:</label>
+    <input type="file" id="imagem" name="imagem" accept="image/*">
+
+    <label for="slug">Slug:</label>
+    <input type="text" id="slug" name="slug" required placeholder="Ex: romance-policial">
+
+    <button type="submit">Salvar</button>
+    <button type="reset">Limpar</button>
+  </form>
+
+    <button id="voltarBtn">Voltar para página principal</button>
+
+  <h2>Lista de Gêneros</h2>
+  <ul id="listaGeneros"></ul>
+
+  <script src="./../crud-genre.js"></script>
+</body>
+</html>

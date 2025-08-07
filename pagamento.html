@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pagamento - Livraria da Fefê</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .hidden { display: none; }
+    #pix-qr canvas { margin-top: 10px; }
+  </style>
+</head>
+<body class="payment-theme">
+  <header>
+    <div class="header-left">
+      <h1>Livraria da Fefê</h1>
+    </div>
+    <div class="header-center">
+      <p>"É para isso que servem os livros. Para viajar sem sair do lugar."</p>
+    </div>
+    <div class="header-right">
+    </div>
+  </header>
+
+  <main>
+    <section class="payment-section">
+      <h2 id="escolha">Escolha a forma de pagamento</h2>
+      <p id="payment-total">Total: R$ 0,00</p>
+      <div class="payment-options">
+        <button id="pix-button" onclick="pagarPIX()">Pagar com PIX</button>
+        <button id="card-button">Pagar com Cartão</button>
+      </div>
+
+      <div id="pix-section" class="hidden">
+        <h3>Escaneie o QR Code para pagar com Pix</h3>
+        <div id="qrcode"></div>
+        <button id="pix">Finalizar Pagamento</button>
+      </div>
+
+      <div id="card-section" class="hidden">
+        <h3 id="pay">Pagamento com Cartão</h3>
+        <form>
+          <label for="card-number">Número do Cartão:</label>
+          <input type="text" id="card-number" name="card-number" required><br>
+
+          <label for="card-expiry">Validade:</label>
+          <input type="text" id="card-expiry" name="card-expiry" required><br>
+
+          <label for="card-cvc">CVC:</label>
+          <input type="text" id="card-cvc" name="card-cvc" required><br>
+
+          <button id="cartao">Finalizar Pagamento</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/pagamento.js"></script>
+  
+</body>
+</html>
+ 

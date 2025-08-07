@@ -1,0 +1,412 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estética geral */
+body {
+    font-family: 'Georgia', serif;
+    background-color: #2e2b2b;
+    color: #f5f5dc;
+    padding-top: 16.6vh; /* Adicionado para evitar que o conteúdo fique embaixo do header fixo */
+}
+
+/* Header fixo no topo */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 2000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 16.6vh;
+    background-color: #2b2929;
+    padding: 0 2rem;
+    color: #ab9e9e;
+}
+
+/* Overlay do carrinho fixo no canto direito */
+#cart-overlay {
+    position: fixed;
+    top: 16.6vh;
+    right: 1rem;
+    background-color: #857b7b;
+    color: #f5f5dc;
+    border: 2px solid #2e2b2b;
+    padding: 1rem;
+    z-index: 1001;
+    border-radius: 10px;
+    min-width: 320px;
+    max-width: 400px;
+    box-shadow: 0 2px 16px #0002;
+    display: none;
+}
+
+.cart-content h2 {
+    margin-bottom: 1rem;
+}
+
+.hidden {
+    display: none;
+  } 
+
+ /* Efeitos de animação ao mostrar o carrinho */
+ #cart-overlay.hidden {
+    display: none;
+  }
+
+
+#cart-overlay .cart-content {
+    background-color: #403c3c;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    align-self: center;
+}
+#cart-overlay:not(.hidden) { display: flex; flex-direction: column; }
+
+/* Overlay do usuário fixo no canto direito, igual ao carrinho */
+#user-overlay {
+    position: fixed;
+    top: 16.6vh;
+    right: 1rem;
+    background-color: #857b7b;
+    color: #f5f5dc;
+    border: 2px solid #2e2b2b;
+    padding: 1rem;
+    z-index: 1002;
+    border-radius: 10px;
+    min-width: 320px;
+    max-width: 400px;
+    box-shadow: 0 2px 16px #0002;
+    display: none;
+}
+#user-overlay .cart-content.user-content {
+    background-color: #403c3c;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    align-self: center;
+}
+#user-overlay:not(.hidden) { display: flex; flex-direction: column; }
+#user-overlay label { display: block; margin: 0.5em 0 0.2em; }
+#user-overlay input { width: 100%; margin-bottom: 0.7em; }
+#user-overlay button { margin-right: 0.5em; }
+#user-overlay.hidden { display: none !important; }
+
+/* Intro */
+.intro {
+    height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #2e2b2b, #4d443b);
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Gêneros */
+.genres {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.genre-line {
+  scroll-margin-top: 16.6vh;
+  display: flex;
+  flex-direction: row; /* lado a lado */
+  align-items: flex-start;
+  background-color: #403c3c;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex-wrap: wrap; /* permite quebrar linha para os livros */
+  padding: 1.5rem;
+  gap: 1.5rem;
+}
+
+.genre-line:hover {
+    background-color: #5c5454;
+}
+
+.genre-line img {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.genre-text {
+  flex: 1;
+}
+
+.genre-text h3 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.genre-text p {
+  font-size: 1.2rem;
+}
+
+
+/* Layout da seção de descrição */
+.genre-description {
+    display: flex;
+    padding: 2rem;
+    height: 25vh;
+    margin: 2rem;
+}
+
+.genre-description .text {
+    width: 70%;
+    font-size: 1.1rem;
+}
+
+.genre-description .image {
+    width: 30%;
+}
+
+.genre-description img {
+    width: 100%;
+    height: auto;
+}
+
+
+
+/* Lista de livros */
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* força 3 colunas */
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transition-property: max-height, opacity;
+}
+
+.book-list:not(.hidden) {
+  max-height: fit-content;
+  opacity: 1;
+}
+
+.book {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2a2a2a;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.book:hover {
+    background-color: #3a3a3a;
+}
+
+.book img {
+    width: 100px;
+    height: auto;
+}
+
+.book-info {
+    max-width: 60%;
+}
+
+
+
+/* Temas dos gêneros */
+body.suspense-theme {
+    background-color: #1a1a1a;
+    color: #ff4d4d;
+}
+
+body.romance-theme {
+    background-color: #5b2c6f;
+    color: #ffe6f0;
+  }
+  
+  body.fantasia-theme {
+    background-color: #2e382e;
+    color: #b3d9a1;
+  }
+  
+  body.drama-theme {
+    background-color: #333 ;
+    color:#ccddee;
+  }
+  
+  body.scifi-theme {
+    background-color: #0f0f0f;
+    color: #00ffcc;
+  }
+  
+  body.biografias-theme {
+    background-color: #f0e0d6;
+    color: #b7410e;
+  }
+  
+  body.autoajuda-theme {
+    background-color: #fef3dd;
+    color: #4285f4;
+  }
+  
+  body.classicos-theme {
+    background-color: #2c0e0e;
+    color: #f5f5dc;
+  }
+  
+  body.tecnicos-theme {
+    background-color: #dcdcdc;
+    color: #c2a400;
+  }
+  
+  body.literatura-brasileira-theme {
+    background-color: #102d14;
+    color: #f5f5dc;
+  }
+  
+  body.checkout-theme, body.payment-theme {
+    background-color: #3a3a3a;
+    color: #f5f5dc;
+  }
+  
+  .checkout-theme h2 {
+    margin: 14px;
+    padding-top: 10px;
+    font-size: 0.7cm;
+  }
+
+  .checkout-section {
+    margin-top: 15px;
+    margin-left: 25%;
+    margin-right: 25%;
+    background: linear-gradient(to right, #411010, #2c0e0e,  #411010 );
+    border-radius: 10px;
+    width: flex;
+    height: flex;
+    border: 3px solid;
+    border-color: #2c0e0e;
+    
+  }
+  
+  #checkout-books, #pix-section, #card-section {
+    margin: 20px;
+    font-size: 0.5cm;
+  }
+  
+   /* Estilos gerais para os botões */
+   button {
+    background-color: #685241; /* Cor de fundo semelhante à madeira escura de uma biblioteca */
+    color: #f5f5dc;
+    font-family: 'Georgia', serif; /* Fontes clássicas e elegantes */
+    font-size: 16px;
+    padding: 12px 20px;
+    border: 1px solid #362a24; /* Bordas com cor mais escura */
+    cursor: pointer;
+    border-radius: 6px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 1rex;
+  }
+  
+  button:hover {
+    background-color: #362a24; /* Cor de fundo mais escura ao passar o mouse */
+    transform: translateY(-2px); /* Levanta o botão suavemente */
+  }
+  
+  button:focus {
+    outline: none; /* Remove o contorno de foco */
+  }
+  
+  button:active {
+    transform: translateY(2px); /* Efeito de pressão ao clicar */
+  }
+  
+ 
+  #pix-qr {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+
+  /* Botão "Ir para o Pagamento" */
+  #proceed-to-payment {
+    background-color: #685241; 
+    margin: 30px;
+  }
+  
+  #proceed-to-payment:hover {
+    background-color: #362a24; 
+  }
+  
+  /* Botão "Finalizar Compra" */
+  #checkout-button {
+    background-color:#685241; /* Cor de destaque para finalizar compra */
+  }
+  
+  #checkout-button:hover {
+    background-color: #362a24; /* Cor mais escura ao passar o mouse */
+  }
+  
+  /* Botão "Cart" no Header */
+  #cart-button, #login-button, .header-between button{
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 0 20px;
+    margin-right: 5px;
+    padding: 5px;
+  }
+ 
+  #cart-items {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  #checkout-total {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px;
+    text-decoration: overline;
+    font-size: 0.5cm;
+    text-align: right;
+  }
+
+  #payment-total {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px;
+    font-size: 0.5cm;
+    text-align: left;
+  }
+
+
+  #qrcode {
+    margin: 2rem;
+    align-items: center;
+  }
+
+  .nome-valor{
+    margin-top: 1rex;
+  }
+
+  #escolha{
+    margin-top: 1rex;
+    margin-left: 1rex;
+  }
+
+  #card-number, #card-expiry, #card-cv, #pay{
+    margin: 0.5rex;
+  }

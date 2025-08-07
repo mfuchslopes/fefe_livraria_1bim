@@ -1,0 +1,207 @@
+/* crud-gêneros.css - Estilo igual ao dos livros */
+
+body {
+  background-color: #2e2b2b;
+  color: #f5f5dc;
+  font-family: 'Georgia', serif;
+  padding: 3rem;
+}
+
+h1, h2 {
+  color: #f5f5dc;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 3px #000;
+}
+
+form {
+  background-color: #403c3c;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 10px #0005;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+form label {
+  display: block;
+  margin: 1rem 0 0.3rem;
+  font-weight: bold;
+  color: #f5f5dc;
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #5f5b5b;
+  background-color: #2e2b2b;
+  color: #f5f5dc;
+  font-family: 'Georgia', serif;
+  margin-bottom: 1rem;
+}
+
+form input[type="file"] {
+  background-color: transparent;
+  border: none;
+  color: #f5f5dc;
+}
+
+button {
+  background-color: #685241;
+  color: #f5f5dc;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  padding: 10px 18px;
+  border: 1px solid #362a24;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #362a24;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(2px);
+}
+
+ul#listaGeneros {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+ul#listaGeneros li {
+  background-color: #1f1d1d;
+  border: 1px solid #4a4a4a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px #0005;
+  transition: transform 0.2s ease;
+  font-family: 'Georgia', serif;
+}
+
+ul#listaGeneros li:hover {
+  transform: translateY(-3px);
+}
+
+ul#listaGeneros li strong {
+  font-size: 1.2rem;
+  color: #f5f5dc;
+}
+
+ul#listaGeneros li button {
+  margin-top: 1rem;
+  margin-right: 0.5rem;
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  background-color: #604738;
+  border: 1px solid #2e1f17;
+  border-radius: 6px;
+}
+
+ul#listaGeneros li button:hover {
+  background-color: #3f2c1f;
+}
+
+ul#listaGeneros li button:active {
+  transform: translateY(1px);
+}
+
+a {
+  color: #d9b87d;
+}
+
+
+ul#listaGeneros {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+ul#listaGeneros li {
+  background-color: #1f1d1d;
+  border: 1px solid #4a4a4a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 6px #0005;
+  gap: 1rem;
+  transition: transform 0.2s ease;
+}
+
+ul#listaGeneros li:hover {
+  transform: translateY(-3px);
+}
+
+ul#listaGeneros .genero-conteudo {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+ul#listaGeneros .imagem {
+  width: 100px;
+  border-radius: 8px;
+  border: 1px solid #3a3a3a;
+  box-shadow: 0 0 5px #0003;
+}
+
+ul#listaGeneros .nome {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #f5f5dc;
+}
+
+ul#listaGeneros .slug {
+  font-size: 1rem;
+  color: #d9b87d;
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+ul#listaGeneros .descricao {
+  font-style: italic;
+  color: #cfcfcf;
+  margin-top: 0.5rem;
+}
+
+ul#listaGeneros .botoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+ul#listaGeneros button {
+  flex: 1;
+  min-width: 100px;
+  background-color: #604738;
+  border: 1px solid #2e1f17;
+  border-radius: 6px;
+  color: #f5f5dc;
+  font-family: 'Georgia', serif;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+ul#listaGeneros button:hover {
+  background-color: #3f2c1f;
+  transform: translateY(-2px);
+}
+
+ul#listaGeneros button:active {
+  transform: translateY(1px);
+}

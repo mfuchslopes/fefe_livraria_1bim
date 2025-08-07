@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha</title>
+    <link rel="stylesheet" href="/css/users-crud.css" />
+</head>
+<body>
+    <h1>Recuperar senha</h1>
+
+    <form id="recuperarForm">
+        <label for="cod">Código recebido:</label>
+        <input type="text" id="cod" required>
+        <button type="button" id="verificarBtn">Verificar código</button>
+
+        <div id="senhaArea" style="display:none;">
+            <label for="senhaNova">Nova senha:</label>
+            <input type="password" id="senhaNova">
+
+            <ul id="senha-requisitos" style="display:none;">
+                <li id="senha-length" class="pendente">• Mínimo 8 caracteres</li>
+                <li id="senha-maiuscula" class="pendente">• Letra maiúscula</li>
+                <li id="senha-minuscula" class="pendente">• Letra minúscula</li>
+                <li id="senha-numero" class="pendente">• Número</li>
+                <li id="senha-especial" class="pendente">• Caractere especial</li>
+            </ul>
+
+            <label for="senhaConfirm">Confirme a nova senha:</label>
+            <input type="password" id="senhaConfirm">
+        </div>
+        <button type="submit" id="alterarBtn" style="display:none;">Alterar senha</button>
+    </form>
+
+    <script src="/tokenSenha.js"></script>
+</body>
+</html>

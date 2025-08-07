@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Livros</title>
+  <link rel="stylesheet" href="./../css/livros-crud.css">
+</head>
+<body>
+  <h1>Gerenciar Livros</h1>
+
+  <form id="formLivro">
+    <input type="hidden" id="id" name="id">
+
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo" name="titulo" required><br>
+
+    <label for="preco">Preço:</label>
+    <input type="number" step="0.01" id="preco" name="preco" required><br>
+
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao" rows="4"></textarea><br>
+
+    <label for="imagem">Imagem do livro:</label>
+    <input type="file" id="imagem" name="imagem" accept="image/*"><br>
+
+    <label for="generos">Gêneros:</label>
+    <select id="generos" name="generos" multiple></select><br>
+
+    <button type="submit">Salvar</button>
+    <button type="reset">Limpar</button>
+  </form>
+
+  <button id="voltarBtn">Voltar para página principal</button>
+
+  <h2>Lista de Livros</h2>
+  <ul id="listaLivros"></ul>
+
+  <script src="./../crud-livros.js"></script>
+</body>
+</html>
+

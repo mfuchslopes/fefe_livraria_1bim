@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administração de Usuários</title>
+  <link rel="stylesheet" href="./../css/users-crud.css" />
+</head>
+<body>
+  <h1>Gerenciar Usuários</h1>
+
+  <h2>Inserir novo usuário</h2>
+
+  <form id="formUsuario">
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" required>
+
+    <label for="cpf">CPF:</label>
+    <input type="text" id="cpf" maxlength="14" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="cep">CEP:</label>
+    <input type="text" id="cep" maxlength="9" required>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" required>
+
+    <ul id="senha-requisitos">
+      <li id="senha-length" class="pendente">• Mínimo 8 caracteres</li>
+      <li id="senha-maiuscula" class="pendente">• Letra maiúscula</li>
+      <li id="senha-minuscula" class="pendente">• Letra minúscula</li>
+      <li id="senha-numero" class="pendente">• Número</li>
+      <li id="senha-especial" class="pendente">• Caractere especial</li>
+    </ul>
+
+    <label>Tipo:</label>
+    <select id="tipo">
+      <option value="cliente">Cliente</option>
+      <option value="admin">Admin</option>
+    </select><br>
+
+    <button type="submit">Salvar</button>
+    <button type="reset">Limpar</button>
+  </form>
+
+  <button id="voltarBtn">Voltar para página principal</button>
+
+  <h2>Usuários Cadastrados</h2>
+  <ul id="listaUsuarios"></ul>
+
+  <script src="./../crud-users.js"></script>
+</body>
+</html>
